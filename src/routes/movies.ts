@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import Movie from '../entity/Movie';
+import Movie from '../entities/Movie';
 
 const router: Router = Router();
 
