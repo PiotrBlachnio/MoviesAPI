@@ -1,0 +1,18 @@
+version: "3.7"
+services: 
+    db:
+        image: postgres
+        environment: 
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_DB: movies-api
+        volumes: 
+            - ./pgdata:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
+    server:
+        image: movies-api-server
+        depends_on: 
+            - db
+        ports:
+            - "4000:4000"
