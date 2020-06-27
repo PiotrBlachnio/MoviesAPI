@@ -67,7 +67,26 @@ router.delete('/:id', async (req: Request, res: Response): Promise<Response | vo
 
         await movie.remove();
 
-        res.status(200).send('Entity removed successfully!');
+        res.status(200).send('Movie removed successfully!');
+    } catch(error) {
+        console.log(error);
+    };
+});
+
+/**
+ * @route   PATCH /movies/:id
+ * @desc    Update movie by providing an id
+ * @access  Public
+*/
+router.patch('/:id', async (req: Request, res: Response): Promise<Response | void> => {
+    try {
+        const movie: Movie | undefined = await Movie.findOne(req.params.id);
+
+        if(!movie) return res.send('Movie with provided id does not exist!');
+
+        await Movie.update({ id: movie.id }, req.body.data);
+
+        res.status(200).send('Movie updated successfully!');
     } catch(error) {
         console.log(error);
     };
