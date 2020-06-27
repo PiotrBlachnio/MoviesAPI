@@ -1,6 +1,7 @@
 import { Application } from "express";
 import expressLoader from './express';
 import logger from '../utils/logger';
+import connectDatabase from '../utils/connect-database';
 
 export default async (app: Application): Promise<void> => {
     process.on('uncaughtException', async (error) => {
@@ -12,5 +13,6 @@ export default async (app: Application): Promise<void> => {
         await logger.log({ type: 'error', message: error, place: 'UnhandledRejection'});
     });
 
+    connectDatabase();
     expressLoader(app);
 };

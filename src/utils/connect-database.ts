@@ -5,8 +5,11 @@ export default async (retries = 5) => {
     while(retries) {
         try {
             await createConnection();
+            await logger.log({ type: 'info', message: 'Connected to the database successfully', place: 'Connect database function' });
+
             break;
         } catch(error) {
+            console.log(error)
             await logger.log({ type: 'error', message: error.message, place: 'Connect database function' });
             retries -=1;
 

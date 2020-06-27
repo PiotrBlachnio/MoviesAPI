@@ -11,7 +11,7 @@ class Movie extends BaseEntity {
     @Column('text')
     author: string;
 
-    @Column('number')
+    @Column('integer')
     stars: number;
 };
 

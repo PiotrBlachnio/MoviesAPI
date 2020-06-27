@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "build/server.bundle.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=dev concurrently \"tsc -w\" \"nodemon dist/server.js\"",
+    "dev": "cross-env NODE_ENV=dev nodemon --exec ts-node --files src/server.ts",
     "build": "tsc",
     "prod": "node dist/server"
   },
@@ -29,6 +29,7 @@
     "passport-google-oauth20": "^2.0.0",
     "pg": "^8.2.1",
     "reflect-metadata": "^0.1.13",
+    "ts-node": "^8.10.2",
     "typeorm": "^0.2.25"
   },
   "devDependencies": {
