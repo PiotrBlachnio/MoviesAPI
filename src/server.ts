@@ -1,4 +1,5 @@
 import express, { Application } from 'express';
+import initLoaders from './loaders';
 import config from './assets/config';
 
 class Server {
