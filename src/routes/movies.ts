@@ -19,7 +19,7 @@ router.get('/', async (req: Request, res: Response): Promise<void> => {
 
 /**
  * @route   GET /movies/:id
- * @desc    Get specific movie by providing id
+ * @desc    Get specific movie by providing an id
  * @access  Public
 */
 router.get('/:id', async (req: Request, res: Response): Promise<Response | void> => {
@@ -48,6 +48,25 @@ router.post('/', async (req: Request, res: Response): Promise<Response | void> =
         }).save();
 
         res.status(201).json({ movie });
+    } catch(error) {
+        console.log(error);
+    };
+});
+
+/**
+ * @route   DELETE /movies/:id
+ * @desc    Delete specific movie by proving an id
+ * @access  Public
+*/
+router.delete('/:id', async (req: Request, res: Response): Promise<Response | void> => {
+    try {
+        const movie: Movie | undefined = await Movie.findOne(req.params.id);
+
+        if(!movie) return res.send('Movie with provided id does not exist!');
+
+        await movie.remove();
+
+        res.status(200).send('Entity removed successfully!');
     } catch(error) {
         console.log(error);
     };
