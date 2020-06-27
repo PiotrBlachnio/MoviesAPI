@@ -6,13 +6,16 @@ class Movie extends BaseEntity {
     id: number;
 
     @Column('text')
-    name: string;
+    title: string;
 
     @Column('text')
-    author: string;
+    director: string;
 
     @Column('integer')
-    stars: number;
+    year: number;
+
+    @Column('integer')
+    userId: number
 };
 
 export default Movie;

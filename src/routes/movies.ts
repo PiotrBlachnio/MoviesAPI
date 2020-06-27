@@ -42,9 +42,10 @@ router.get('/:id', async (req: Request, res: Response): Promise<Response | void>
 router.post('/', async (req: Request, res: Response): Promise<Response | void> => {
     try {
         const movie: Movie = await Movie.create({
-            name: req.body.name,
-            author: req.body.author,
-            stars: req.body.stars
+            title: req.body.title,
+            director: req.body.director,
+            year: req.body.year,
+            userId: req.body.userId
         }).save();
 
         res.status(201).json({ movie });
