@@ -6,16 +6,14 @@ passport.serializeUser((user, done) => {
     done(null, user);
 });
 
-passport.deserializeUser((id, done) => {
-    done(null, id);
+passport.deserializeUser((user, done) => {
+    done(null, user);
 });
 
 passport.use(new Strategy({
-        clientID: config.CLIENT_ID,
-        clientSecret: config.CLIENT_SECRET,
-        callbackURL: config.CALLBACK_URL }, (accessToken, refreshToken, profile, done) => {
-
-}));
+    clientID: config.CLIENT_ID,
+    clientSecret: config.CLIENT_SECRET,
+    callbackURL: config.CALLBACK_URL }, (accessToken, refreshToken, profile, done) => {}));
 
 passport.use(new Strategy({
     clientID: config.CLIENT_ID,

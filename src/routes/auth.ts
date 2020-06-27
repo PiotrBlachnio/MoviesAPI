@@ -5,11 +5,11 @@ import passport from 'passport';
 const router: Router = Router();
 
 /**
- * @route   POST /auth/google
+ * @route   GET /auth/google
  * @desc    Authorize user using Google Service
  * @access  Public
 */
-router.post('/google', async (): Promise<void> => {
+router.get('/google', async (): Promise<void> => {
     await logger.log({ type: 'info', message: 'Authorizing using Google Service...', place: 'Google route' });
     passport.authenticate('google', { scope: ['profile', 'email'] })
 });
