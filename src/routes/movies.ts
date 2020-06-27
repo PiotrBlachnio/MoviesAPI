@@ -34,4 +34,23 @@ router.get('/:id', async (req: Request, res: Response): Promise<Response | void>
     };
 });
 
+/**
+ * @route   POST /movies
+ * @desc    Create new movie
+ * @access  Public
+*/
+router.post('/', async (req: Request, res: Response): Promise<Response | void> => {
+    try {
+        const movie: Movie = await Movie.create({
+            name: req.body.name,
+            author: req.body.author,
+            stars: req.body.stars
+        }).save();
+
+        res.status(201).json({ movie });
+    } catch(error) {
+        console.log(error);
+    };
+});
+
 export default router;
