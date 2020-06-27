@@ -4,8 +4,7 @@
   "main": "build/server.bundle.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=dev nodemon --exec ts-node --files src/server.ts",
-    "build": "tsc",
-    "prod": "node dist/server"
+    "prod": "cross-env NODE_ENV=production ts-node --files src/server.ts"
   },
   "repository": {
     "type": "git",
