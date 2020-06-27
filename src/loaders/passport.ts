@@ -13,11 +13,6 @@ passport.deserializeUser((user, done) => {
 passport.use(new Strategy({
     clientID: config.CLIENT_ID,
     clientSecret: config.CLIENT_SECRET,
-    callbackURL: config.CALLBACK_URL }, (accessToken, refreshToken, profile, done) => {}));
-
-passport.use(new Strategy({
-    clientID: config.CLIENT_ID,
-    clientSecret: config.CLIENT_SECRET,
     callbackURL: config.CALLBACK_URL },
     (accessToken, refreshToken, profile, done) => {
         return done(undefined, profile);

@@ -1,4 +1,4 @@
-import { Router, Response } from 'express';
+import { Router, Response, Request } from 'express';
 import logger from '../utils/logger';
 import passport from 'passport';
 
@@ -9,9 +9,8 @@ const router: Router = Router();
  * @desc    Authorize user using Google Service
  * @access  Public
 */
-router.get('/google', async (): Promise<void> => {
+router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }), async (): Promise<void> => {
     await logger.log({ type: 'info', message: 'Authorizing using Google Service...', place: 'Google route' });
-    passport.authenticate('google', { scope: ['profile', 'email'] })
 });
 
 /**
@@ -19,17 +18,17 @@ router.get('/google', async (): Promise<void> => {
  * @desc    Redirect user either to success or failure route
  * @access  Public
 */
-router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/home/unauthorized' }), async (res: Response): Promise<void> => {
+router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/home/unauthorized' }), async (req: Request, res: Response): Promise<void> => {
     await logger.log({ type: 'info', message: 'Redirecting user...', place: 'Callback route' });
     res.redirect('/home/dashboard');
 });
 
 /**
- * @route   POST /auth/logout
+ * @route   GET /auth/logout
  * @desc    Logout user
  * @access  Protected
 */
-router.post('/logout', (req, res) => {
+router.get('/logout', (req, res) => {
     req.session = null;
     req.logout();
 

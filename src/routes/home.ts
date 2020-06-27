@@ -9,7 +9,7 @@ const router: Router = Router();
  * @desc    Rendered when user is not logged in
  * @access  Public
 */
-router.get('/guest', async (res: Response): Promise<void> => {
+router.get('/guest', async (req: Request, res: Response): Promise<void> => {
     await logger.log({ type: 'info', message: 'Rendered guest page', place: 'Guest route' });
     res.send('Welcome on the guest page!');
 });
@@ -19,7 +19,7 @@ router.get('/guest', async (res: Response): Promise<void> => {
  * @desc    Rendered when user is unauthorized
  * @access  Public
 */
-router.get('/unauthorized', async (res: Response): Promise<void> => {
+router.get('/unauthorized', async (req: Request, res: Response): Promise<void> => {
     await logger.log({ type: 'info', message: 'Rendered unauthorized page', place: 'Unauthorized route' });
     res.send('You are not authorized!');
 });
