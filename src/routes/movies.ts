@@ -17,4 +17,21 @@ router.get('/', async (req: Request, res: Response): Promise<void> => {
     };
 });
 
+/**
+ * @route   GET /movies/:id
+ * @desc    Get specific movie by providing id
+ * @access  Public
+*/
+router.get('/:id', async (req: Request, res: Response): Promise<Response | void> => {
+    try {
+        const movie: Movie | undefined = await Movie.findOne(req.params.id);
+
+        if(!movie) return res.send('Movie with provided id does not exist!');
+
+        res.status(200).json({ movie });
+    } catch(error) {
+        console.log(error);
+    };
+});
+
 export default router;
