@@ -14,7 +14,7 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
 
 /**
  * @route   GET /auth/google/callback
- * @desc    Redirect user either to success or failure route
+ * @desc    Redirect user and create new if does not exist
  * @access  Public
 */
 router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/home/unauthorized' }), async (req: Request, res: Response): Promise<void> => {
@@ -25,11 +25,13 @@ router.get('/google/callback', passport.authenticate('google', { failureRedirect
         const existingUser: User | undefined = await User.findOne({ email: req.user._json.email });
 
         if(!existingUser) {
-            const user: User = await User.create({
+            await User.create({
                 name: req.user._json.name,
                 email: req.user._json.email
-            });
+            }).save();
         };
+
+        await logger.log({ type: 'info', message: 'User created successfully!', place: 'Callback route' });
     } catch(error) {
         console.log(error);
     };
