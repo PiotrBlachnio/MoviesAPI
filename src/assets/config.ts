@@ -8,7 +8,7 @@ const secrets = {
 };
 
 const defaults = {
-    PORT: '4001'
+    PORT: '4000'
 };
 
 export default {

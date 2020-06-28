@@ -1,6 +1,7 @@
 import { Router, Response, Request } from 'express';
 import logger from '../utils/logger';
 import passport from 'passport';
+import User from '../models/User';
 
 const router: Router = Router();
 
@@ -9,9 +10,7 @@ const router: Router = Router();
  * @desc    Authorize user using Google Service
  * @access  Public
 */
-router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }), async (): Promise<void> => {
-    await logger.log({ type: 'info', message: 'Authorizing using Google Service...', place: 'Google route' });
-});
+router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 /**
  * @route   GET /auth/google/callback
@@ -21,6 +20,19 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
 router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/home/unauthorized' }), async (req: Request, res: Response): Promise<void> => {
     await logger.log({ type: 'info', message: 'Redirecting user...', place: 'Callback route' });
     res.redirect('/home/dashboard');
+
+    try {
+        const existingUser: User | undefined = await User.findOne({ email: req.user._json.email });
+
+        if(!existingUser) {
+            const user: User = await User.create({
+                name: req.user._json.name,
+                email: req.user._json.email
+            });
+        };
+    } catch(error) {
+        console.log(error);
+    };
 });
 
 /**

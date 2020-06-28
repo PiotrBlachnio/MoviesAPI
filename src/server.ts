@@ -3,6 +3,7 @@ import initLoaders from './loaders';
 import config from './assets/config';
 import './loaders/passport';
 
+//TODO: Create model validation as an event
 class Server {
     public port: string;
     public app: Application;

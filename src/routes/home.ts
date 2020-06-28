@@ -31,7 +31,7 @@ router.get('/unauthorized', async (req: Request, res: Response): Promise<void> =
 */
 router.get('/dashboard', auth, async (req: Request, res: Response): Promise<void> => {
     await logger.log({ type: 'info', message: 'Rendered dashboard page', place: 'Dashboard route' });
-    res.send(`Welcome on the dashboard! \n Logged in as: ${req.user?.displayName}`);
+    res.send(`Welcome on the dashboard! \n Logged in as: ${req.user._json.name}`);
 });
 
 export default router;

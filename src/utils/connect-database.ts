@@ -1,10 +1,12 @@
-import { createConnection } from 'typeorm';
+import { createConnection, Connection } from 'typeorm';
 import logger from './logger';
+
+export let connection: Connection;
 
 export default async (retries = 5) => {
     while(retries) {
         try {
-            await createConnection();
+            connection = await createConnection();
             await logger.log({ type: 'info', message: 'Connected to the database successfully', place: 'Connect database function' });
 
             break;
