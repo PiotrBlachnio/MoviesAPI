@@ -5,7 +5,7 @@ import { connection } from '../utils/connect-database';
 @Entity('movies')
 class Movie extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
-    id: number;
+    id: string;
 
     @Column('text')
     title: string;
@@ -16,8 +16,8 @@ class Movie extends BaseEntity {
     @Column('integer')
     year: number;
 
-    @Column('integer')
-    userId: number
+    @Column('text')
+    userId: string
 
     @Column('bigint', { default: Date.now() })
     createdDate: number

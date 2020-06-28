@@ -1,16 +1,18 @@
 import { Router, Request, Response } from 'express';
 import Movie from '../models/Movie';
+import auth from '../middlewares/auth';
 
 const router: Router = Router();
 
 /**
  * @route   GET /movies
  * @desc    Get all movies
- * @access  Public
+ * @access  Protected
 */
-router.get('/', async (req: Request, res: Response): Promise<void> => {
+
+router.get('/', auth, async (req: Request, res: Response): Promise<void> => {
     try {
-        const movies: Movie[] = await Movie.find();
+        const movies: Movie[] = await Movie.find({ userId: req.user.id });
         res.status(200).json({ movies });
     } catch(error) {
         console.log(error);
@@ -20,11 +22,11 @@ router.get('/', async (req: Request, res: Response): Promise<void> => {
 /**
  * @route   GET /movies/:id
  * @desc    Get specific movie by providing an id
- * @access  Public
+ * @access  Protected
 */
-router.get('/:id', async (req: Request, res: Response): Promise<Response | void> => {
+router.get('/:id', auth, async (req: Request, res: Response): Promise<Response | void> => {
     try {
-        const movie: Movie | undefined = await Movie.findOne(req.params.id);
+        const movie: Movie | undefined = await Movie.findOne({ id: req.params.id, userId: req.user.id });
 
         if(!movie) return res.send('Movie with provided id does not exist!');
 
@@ -37,15 +39,15 @@ router.get('/:id', async (req: Request, res: Response): Promise<Response | void>
 /**
  * @route   POST /movies
  * @desc    Create new movie
- * @access  Public
+ * @access  Protected
 */
-router.post('/', async (req: Request, res: Response): Promise<Response | void> => {
+router.post('/', auth, async (req: Request, res: Response): Promise<Response | void> => {
     try {
         const movie: Movie = await Movie.create({
             title: req.body.title,
             director: req.body.director,
             year: req.body.year,
-            userId: req.body.userId
+            userId: req.user.id
         }).save();
 
         res.status(201).json({ movie });
@@ -57,11 +59,11 @@ router.post('/', async (req: Request, res: Response): Promise<Response | void> =
 /**
  * @route   DELETE /movies/:id
  * @desc    Delete specific movie by proving an id
- * @access  Public
+ * @access  Protected
 */
-router.delete('/:id', async (req: Request, res: Response): Promise<Response | void> => {
+router.delete('/:id', auth, async (req: Request, res: Response): Promise<Response | void> => {
     try {
-        const movie: Movie | undefined = await Movie.findOne(req.params.id);
+        const movie: Movie | undefined = await Movie.findOne({ id: req.params.id, userId: req.user.id });
 
         if(!movie) return res.send('Movie with provided id does not exist!');
 
@@ -76,15 +78,15 @@ router.delete('/:id', async (req: Request, res: Response): Promise<Response | vo
 /**
  * @route   PATCH /movies/:id
  * @desc    Update movie by providing an id
- * @access  Public
+ * @access  Protected
 */
-router.patch('/:id', async (req: Request, res: Response): Promise<Response | void> => {
+router.patch('/:id', auth, async (req: Request, res: Response): Promise<Response | void> => {
     try {
-        const movie: Movie | undefined = await Movie.findOne(req.params.id);
+        const movie: Movie | undefined = await Movie.findOne({ id: req.params.id, userId: req.user.id });
 
         if(!movie) return res.send('Movie with provided id does not exist!');
 
-        await Movie.update({ id: movie.id }, req.body.data);
+        await Movie.update({ id: movie.id, userId: req.user.id }, req.body.data);
 
         res.status(200).send('Movie updated successfully!');
     } catch(error) {
