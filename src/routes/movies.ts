@@ -1,5 +1,7 @@
 import { Router, Request, Response } from 'express';
 import Movie from '../models/Movie';
+import { v4 as uuidv4 } from 'uuid';
+import { validate, ValidationError } from 'class-validator';
 import auth from '../middlewares/auth';
 
 const router: Router = Router();
@@ -41,16 +43,21 @@ router.get('/:id', auth, async (req: Request, res: Response): Promise<Response |
  * @desc    Create new movie
  * @access  Protected
 */
-router.post('/', auth, async (req: Request, res: Response): Promise<Response | void> => {
+router.post('/', async (req: Request, res: Response): Promise<Response | void> => {
     try {
-        const movie: Movie = await Movie.create({
+        const movie: Movie = Movie.create({
             title: req.body.title,
             director: req.body.director,
             year: req.body.year,
-            userId: req.user.id
-        }).save();
+            userId: uuidv4()
+        });
 
-        res.status(201).json({ movie });
+        const errors: ValidationError[] = await validate(movie);
+        if(errors.length > 0) {
+            return res.status(400).json({ error: Object.values(errors[0].constraints!)[0] });
+        }
+
+        res.status(201).json({ movie: await movie.save() });
     } catch(error) {
         console.log(error);
     };
