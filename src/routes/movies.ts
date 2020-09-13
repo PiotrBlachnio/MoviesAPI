@@ -1,6 +1,5 @@
 import { Router, Request, Response } from 'express';
 import Movie from '../models/Movie';
-import { v4 as uuidv4 } from 'uuid';
 import { validate, ValidationError } from 'class-validator';
 import auth from '../middlewares/auth';
 
@@ -43,13 +42,13 @@ router.get('/:id', auth, async (req: Request, res: Response): Promise<Response |
  * @desc    Create new movie
  * @access  Protected
 */
-router.post('/', async (req: Request, res: Response): Promise<Response | void> => {
+router.post('/', auth, async (req: Request, res: Response): Promise<Response | void> => {
     try {
         const movie: Movie = Movie.create({
             title: req.body.title,
             director: req.body.director,
             year: req.body.year,
-            userId: uuidv4()
+            userId: req.user.id
         });
 
         const errors: ValidationError[] = await validate(movie);
