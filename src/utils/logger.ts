@@ -1,4 +1,4 @@
-import Logger from '@stargaze/logger';
+import Logger from '@primaxx/logger';
 import config from '../assets/config';
 
 export default new Logger({
